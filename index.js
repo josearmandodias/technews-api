@@ -6,9 +6,6 @@ const app = express();
 
 require('dotenv').config();
 
-app.set("view engine", "ejs");
-app.set("views", "./src/views");
-
 app.use(router);
 
 const PORT = process.env.PORT || 2000;
