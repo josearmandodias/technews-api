@@ -8,7 +8,7 @@ require('dotenv').config();
 
 app.use(router);
 
-const PORT = process.env.PORT || 2000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`App listening on http://localhost:${PORT}`);
