@@ -1,10 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-const articles = [];
-const url = [];
-
-
 const mainController = {
 
   home: async (req, res) => {
@@ -22,24 +18,31 @@ const mainController = {
 
       //const recent = infos.map(e => e.date > 2022)
 
-      res.json('Welcome on my Real Madrid API')
+      res.send('Welcome on my tech news api');
   },
 
   news: async (req, res) => {
+    
+    const news = [];
 
     try {
-      const response = await axios.get('https://www.wired.com/');
-      const html = response.data;
-      const $ = cheerio.load(html);
-  
-      $('h2:contains("Twitter")', html).each(() => {
-        const title = $(this).text();
-        articles.push({
-          title
+      axios.get('https://www.theverge.com/tech')
+        .then(response => {
+          const html = response.data;
+          const $ = cheerio.load(html);
+
+          $('a:contains("Google")', html).each(function () {
+            const title = $(this).text();
+            const url = $(this).attr('href');
+
+            news.push({
+              title,
+              url
+            });
+          });
+
+          res.json(JSON.stringify(news, null, 2));
         });
-      })
-  
-      res.json(articles);
     } catch(e) {
       throw new Error(e);
     }
