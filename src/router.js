@@ -4,6 +4,6 @@ const mainController = require('./controllers/mainController');
 const router = Router();
 
 router.get('/', mainController.home);
-router.get('/news', mainController.news);
+router.get('/ai', mainController.ai);
 
 module.exports = router;

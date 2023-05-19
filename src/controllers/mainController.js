@@ -4,48 +4,50 @@ const cheerio = require('cheerio');
 const mainController = {
 
   home: async (req, res) => {
-      //const config = {
-      //  method: 'GET',
-      //  url: 'https://v3.football.api-sports.io/fixtures?team=541&season=2022',
-      //  headers: {
-      //    'x-rapidapi-key': `${process.env.API_KEY}`,
-      //    'x-rapidapi-host': 'v3.football.api-sports.io'
-      //  }
-      //};
-
-      //const result = await axios.get(config.url, config);
-      //const infos = result.data.response;
-
-      //const recent = infos.map(e => e.date > 2022)
-
       res.send('Welcome on my tech news api');
   },
 
-  news: async (req, res) => {
+  ai: async (req, res) => {
+
+    const newspapers = [
+      {
+        name: "technologyreview",
+        url: "https://www.technologyreview.com/"
+      },
+      {
+        name: "nytimes",
+        url:"https://www.nytimes.com/international/section/technology"
+      },
+      {
+        name: 'wired',
+        url: 'https://www.wired.com/category/ideas/'
+      }
+    ]
     
-    const news = [];
+    let news = [];
 
     try {
-      axios.get('https://www.theverge.com/tech')
-        .then(response => {
-          const html = response.data;
-          const $ = cheerio.load(html);
 
-          $('a:contains("Google")', html).each(function () {
-            const title = $(this).text();
-            const url = $(this).attr('href');
+      for (newspaper of newspapers){
+        const response = await fetch(newspaper.url)
+        const data = await response.text();
+        const $ = cheerio.load(data);
 
-            news.push({
-              title,
-              url
-            });
+        $('a:contains("AI")', data).each(function () {
+          const title = $(this).text();
+          const url = $(this).attr('href');
+          news.push({
+            title,
+            url: `https://${newspaper.name}.com` + url
           });
-
-          res.json(JSON.stringify(news, null, 2));
         });
+      }
+
     } catch(e) {
       throw new Error(e);
     }
+
+    res.json(news);
   }
 };
 
