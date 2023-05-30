@@ -15,7 +15,7 @@ const mainController = {
       {
         name: "nytimes",
         url:"https://www.nytimes.com/international/section/technology",
-        base: ''
+        base: 'https://www.nytimes.com/international/section/technology'
       },
       {
         name: 'theguardian',
